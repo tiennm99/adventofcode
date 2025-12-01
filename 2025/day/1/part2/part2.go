@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"math"
 	"os"
 	"strconv"
 )
@@ -22,13 +23,16 @@ func main() {
 			multiplier = -1
 		}
 		number, _ := strconv.Atoi(line[1:])
-		for range number {
-			current += multiplier
-			current = ((current % 100) + 100) % 100
-			if current == 0 {
-				counter++
-			}
+		prevCurrent := current
+		current += number * multiplier
+		counter += int(math.Floor(math.Abs(float64(current) / 100)))
+		if prevCurrent*current < 0 {
+			counter++
 		}
+		if current == 0 {
+			counter++
+		}
+		current = ((current % 100) + 100) % 100
 	}
 	fmt.Printf("%d\n", counter)
 }
